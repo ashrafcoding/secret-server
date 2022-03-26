@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 Schema = mongoose.Schema;
 
 const secretSchema = new Schema({
@@ -25,8 +25,9 @@ const secretSchema = new Schema({
     type: Date,
     description:
       "The secret won't be available after the given time. The value is provided in seconds. 0 means never expires",
-    required: true,
+    default: null,
   },
 });
+secretSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 module.exports = mongoose.model("Secret", secretSchema);

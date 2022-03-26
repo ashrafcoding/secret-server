@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Box,
   TextField,
@@ -7,11 +9,38 @@ import {
   Divider,
   Badge,
 } from "@mui/material";
-import SecretItem from "./SecretItem";
-const Form = () => {
+import SecretItems from "./SecretItems";
+const DataForm = () => {
+  const [secret, setSecret] = useState("");
+  const [seconds, setSeconds] = useState("");
+  const [secretList, setSecretList] = useState([]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("/v1/secret", {
+        secretText: secret,
+        expiresAfter: seconds,
+      })
+      .then((res) => {
+        setSecretList([...secretList, res.data]);
+        setSecret("");
+        setSeconds("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    axios.get("/v1/secret").then((res) => {
+      setSecretList(res.data);
+    });
+  }, []);
+
   return (
     <Paper>
-      <Box component="form" autoComplete="off" p={3}>
+      <Box component="form" autoComplete="off" p={3} onSubmit={handleSubmit}>
         <Typography variant="h6" mb={2}>
           Secret
         </Typography>
@@ -45,12 +74,13 @@ const Form = () => {
             </Typography>
             <Box mt={5}>
               <TextField
-                error
                 id="outlined-error"
-                label="Error"
+                label="secret"
                 required={true}
-                placeholder="Hello World"
+                placeholder="secret"
                 size="small"
+                value={secret}
+                onChange={(e) => setSecret(e.target.value)}
               />
             </Box>
           </Box>
@@ -76,23 +106,26 @@ const Form = () => {
             </Typography>
             <Box mt={5}>
               <TextField
-                error
                 id="outlined-error"
-                label="Error"
+                label="expiresAfter"
                 required={true}
-                placeholder="Hello World"
+                placeholder="Example: 3600"
                 size="small"
+                type="number"
+                value={seconds}
+                onChange={(e) => setSeconds(e.target.value)}
               />
             </Box>
           </Box>
         </Box>
-        <Button variant="contained" fullWidth="true" type="submit">
+        <Button variant="contained" fullWidth={true} type="submit">
           Submit
         </Button>
       </Box>
-      <SecretItem />
+      <Divider />
+      <SecretItems secrets={secretList} setSecretList={setSecretList} />
     </Paper>
   );
 };
 
-export default Form;
+export default DataForm;
