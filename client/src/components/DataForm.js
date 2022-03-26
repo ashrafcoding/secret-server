@@ -8,6 +8,7 @@ import {
   Typography,
   Divider,
   Badge,
+  Grid,
 } from "@mui/material";
 import SecretItems from "./SecretItems";
 const DataForm = () => {
@@ -45,17 +46,21 @@ const DataForm = () => {
           Secret
         </Typography>
         <Divider />
-        <Box display="flex" gap={23}>
+        <Grid container  >
+          <Grid item xs={12} sm={4}>
           <Typography variant="subtitle2" mb={2}>
             Name
           </Typography>
-          <Typography variant="subtitle2" mb={2}>
+          </Grid>
+          <Grid item  sm={8} sx={{display:{xs:"none", sm:"block"}}}>
+          <Typography variant="subtitle2" mb={2} >
             Description
           </Typography>
-        </Box>
+          </Grid>
+        </Grid>
         <Divider />
-        <Box display="flex" gap={20}>
-          <Box sx={{ position: "relative" }}>
+        <Grid container >
+          <Grid item xs={12} sm={4}  sx={{ position: "relative" }}>
             <Badge
               sx={{ color: "red", left: "75px", bottom: "-15px" }}
               badgeContent={"*required"}
@@ -67,8 +72,8 @@ const DataForm = () => {
             <Typography variant="body2" mt={2} sx={{ fontStyle: "italic" }}>
               (formData)
             </Typography>
-          </Box>
-          <Box mb={2} py={2}>
+          </Grid>
+          <Grid item xs={12} sm={8} sx={{width:"100%"}}  mb={2} py={2}>
             <Typography variant="body2" mt={2}>
               This text will be saved as a secret
             </Typography>
@@ -83,10 +88,10 @@ const DataForm = () => {
                 onChange={(e) => setSecret(e.target.value)}
               />
             </Box>
-          </Box>
-        </Box>
-        <Box display="flex" gap={20}>
-          <Box sx={{ position: "relative" }}>
+          </Grid>
+        </Grid>
+        <Grid container >
+          <Grid item xs={12} sm={4} sx={{ position: "relative" }}>
             <Badge
               sx={{ color: "red", left: "110px", bottom: "-15px" }}
               badgeContent={"*required"}
@@ -98,9 +103,9 @@ const DataForm = () => {
             <Typography variant="body2" mt={2} sx={{ fontStyle: "italic" }}>
               (formData)
             </Typography>
-          </Box>
-          <Box py={2}>
-            <Typography variant="body2" mt={2}>
+          </Grid>
+          <Grid item xs={12} sm={8} py={2}>
+            <Typography variant="body2"  mt={2}>
               The secret won't be available after the given time. The value is
               provided in seconds. 0 means never expires
             </Typography>
@@ -116,8 +121,8 @@ const DataForm = () => {
                 onChange={(e) => setSeconds(e.target.value)}
               />
             </Box>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
         <Button variant="contained" fullWidth={true} type="submit">
           Submit
         </Button>
